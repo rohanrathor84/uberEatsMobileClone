@@ -1,0 +1,33 @@
+const color = {
+  white: '#ffffff',
+  black: '#000000',
+  gray900: '#212121',
+  gray800: '#424242',
+  gray700: '#616161',
+  gray600: '#757575',
+  gray500: '#9E9E9E',
+  gray400: '#BDBDBD',
+  gray300: '#E0E0E0',
+  gray200: '#EEEEEE',
+  gray100: '#f5f5f5',
+  colorArray: [
+    '#FFEBEE',
+    '#FCE4EC',
+    '#F3E5F5',
+    '#EDE7F6',
+    '#E8EAF6',
+    '#E3F2FD',
+    '#E1F5FE',
+    '#E0F7FA',
+    '#E0F2F1',
+    '#E8F5E9',
+    '#FFF8E1',
+    '#FFF3E0',
+    '#FBE9E7',
+    '#EFEBE9',
+    '#FAFAFA',
+    '#ECEFF1',
+  ],
+};
+
+export default color;
