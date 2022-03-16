@@ -1,14 +1,15 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import color from '../../resources/colors';
 // import Entypo from "react-native-vector-icons/Entypo";
 
 export default function SearchBar({cityHandler}) {
   // const [textInput, setTextInput] = useState("");
   return (
-    <View style={{marginTop: 15, flexDirection: 'row'}}>
+    <View style={styles.mainContainer}>
       <GooglePlacesAutocomplete
         query={{key: 'AIzaSyACEzzlQmCCmWnAc3yWeAqYU0sTDI-ga30'}}
         onPress={(data, details = null) => {
@@ -19,13 +20,15 @@ export default function SearchBar({cityHandler}) {
         placeholder="Search"
         styles={{
           textInput: {
-            backgroundColor: '#eeeeee',
+            backgroundColor: color.gray200,
             borderRadius: 20,
-            fontWeight: '700',
+            fontFamily: 'roboto.regular',
             marginTop: 7,
+            color: color.gray600,
+            fontSize: 15,
           },
           textInputContainer: {
-            backgroundColor: '#eeeeee',
+            backgroundColor: color.gray200,
             borderRadius: 50,
             flexDirection: 'row',
             alignItems: 'center',
@@ -41,12 +44,12 @@ export default function SearchBar({cityHandler}) {
         //   value: textInput,
         // }}
         renderLeftButton={() => (
-          <View style={{marginStart: 10}}>
+          <View style={styles.leftBtnStyle}>
             <Ionicons name="location-sharp" size={24} />
           </View>
         )}
         renderRightButton={() => (
-          <View style={{flexDirection: 'row'}}>
+          <View style={styles.rightBtnStyle}>
             {/* {textInput.length > 0 ? (
               <TouchableOpacity
                 style={{
@@ -60,17 +63,13 @@ export default function SearchBar({cityHandler}) {
                 <Entypo name="circle-with-cross" />
               </TouchableOpacity>
             ) : null} */}
-            <View
-              style={{
-                flexDirection: 'row',
-                marginEnd: 8,
-                backgroundColor: 'white',
-                padding: 9,
-                borderRadius: 30,
-                alignItems: 'center',
-              }}>
-              <AntDesign name="clockcircle" size={11} style={{marginEnd: 6}} />
-              <Text>Search</Text>
+            <View style={styles.rightContainerStyle}>
+              <AntDesign
+                name="clockcircle"
+                size={12}
+                style={styles.clockIconStyle}
+              />
+              <Text style={styles.searchTextStyle}>Search</Text>
             </View>
           </View>
         )}
@@ -78,3 +77,23 @@ export default function SearchBar({cityHandler}) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  mainContainer: {marginTop: 15, flexDirection: 'row'},
+  leftBtnStyle: {marginStart: 10},
+  rightBtnStyle: {flexDirection: 'row'},
+  rightContainerStyle: {
+    flexDirection: 'row',
+    marginEnd: 8,
+    backgroundColor: 'white',
+    padding: 9,
+    borderRadius: 30,
+    alignItems: 'center',
+  },
+  searchTextStyle: {
+    color: color.gray600,
+    fontFamily: 'roboto.regular',
+    fontSize: 15,
+  },
+  clockIconStyle: {marginEnd: 6},
+});

@@ -5,6 +5,7 @@ import OrderItem from './OrderItem';
 import firestore, {firebase} from '@react-native-firebase/firestore';
 import LottieView from 'lottie-react-native';
 import {TimeConverter} from '../../utilities/utils';
+import color from '../../resources/colors';
 
 export default function ViewCart({navigation}) {
   const [modalVisible, setmodalVisible] = useState(false);
@@ -55,39 +56,17 @@ export default function ViewCart({navigation}) {
             ))}
             <View style={styles.subtotalContainer}>
               <Text style={styles.subtotalText}>Subtotal</Text>
-              <Text>{totalUSD}</Text>
+              <Text style={styles.subtotalText}>{totalUSD}</Text>
             </View>
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <View style={styles.buttonContainer}>
               <TouchableOpacity
-                style={{
-                  marginTop: 20,
-                  backgroundColor: 'black',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  padding: 13,
-                  borderRadius: 30,
-                  width: 300,
-                  position: 'relative',
-                }}
+                style={styles.btnStyle}
                 onPress={() => {
                   setloading(true);
                   addOrderTOFireBase();
                 }}>
-                <Text style={{color: 'white', fontSize: 20}}>Checkout</Text>
-                <Text
-                  style={{
-                    position: 'absolute',
-                    right: 20,
-                    color: 'white',
-                    fontSize: 15,
-                  }}>
-                  {total ? totalUSD : ''}
-                </Text>
+                <Text style={styles.chekoutTextStyle}>Checkout</Text>
+                <Text style={styles.totalStyle}>{total ? totalUSD : ''}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -100,19 +79,9 @@ export default function ViewCart({navigation}) {
   return (
     <>
       {loading ? (
-        <View
-          style={{
-            backgroundColor: 'black',
-            opacity: 0.6,
-            position: 'absolute',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flex: 1,
-            width: '100%',
-            height: '100%',
-          }}>
+        <View style={styles.animationViewStyle}>
           <LottieView
-            style={{height: 200}}
+            style={styles.animationStyle}
             source={require('../../assets/animations/scanner.json')}
             autoPlay={true}
             speed={3}
@@ -128,39 +97,13 @@ export default function ViewCart({navigation}) {
             {checkoutModalContent()}
           </Modal>
           {total ? (
-            <View
-              style={{
-                alignItems: 'center',
-                position: 'absolute',
-                bottom: 26,
-                zIndex: 900,
-                justifyContent: 'center',
-                left: 0,
-                right: 0,
-              }}>
+            <View style={styles.viewCartContainer}>
               <TouchableOpacity
-                style={{
-                  backgroundColor: 'black',
-                  alignItems: 'center',
-                  padding: 15,
-                  borderRadius: 30,
-                  width: 250,
-                  position: 'relative',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}
+                style={styles.viewCartBtnStyle}
                 activeOpacity={0.5}
                 onPress={() => setmodalVisible(true)}>
-                <Text style={{color: 'white', fontSize: 16}}>View Cart</Text>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 16,
-                    position: 'absolute',
-                    right: 16,
-                  }}>
-                  {totalUSD}
-                </Text>
+                <Text style={styles.viewCartTextStyle}>View Cart</Text>
+                <Text style={styles.totalPriceStyle}>{totalUSD}</Text>
               </TouchableOpacity>
             </View>
           ) : (
@@ -176,11 +119,11 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: color.blackShin1,
   },
 
   modalCheckoutContainer: {
-    backgroundColor: 'white',
+    backgroundColor: color.white,
     padding: 16,
     height: 500,
     borderWidth: 1,
@@ -188,7 +131,8 @@ const styles = StyleSheet.create({
 
   restaurantName: {
     textAlign: 'center',
-    fontWeight: '600',
+    fontFamily: 'roboto.medium',
+    color: color.black,
     fontSize: 18,
     marginBottom: 10,
   },
@@ -199,8 +143,78 @@ const styles = StyleSheet.create({
   },
   subtotalText: {
     textAlign: 'left',
-    fontWeight: '600',
+    fontFamily: 'roboto.medium',
+    color: color.gray800,
     fontSize: 15,
     marginBottom: 10,
+  },
+  buttonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnStyle: {
+    marginTop: 20,
+    backgroundColor: 'black',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 13,
+    borderRadius: 30,
+    width: 300,
+    position: 'relative',
+  },
+  chekoutTextStyle: {
+    color: color.white,
+    fontSize: 20,
+    fontFamily: 'roboto.regular',
+  },
+  totalStyle: {
+    position: 'absolute',
+    right: 20,
+    color: color.white,
+    fontSize: 15,
+    fontFamily: 'roboto.regular',
+  },
+  animationViewStyle: {
+    backgroundColor: color.black,
+    opacity: 0.6,
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  animationStyle: {height: 200},
+  viewCartContainer: {
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 26,
+    zIndex: 900,
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
+  },
+  viewCartBtnStyle: {
+    backgroundColor: color.black,
+    alignItems: 'center',
+    padding: 15,
+    borderRadius: 30,
+    width: 250,
+    position: 'relative',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  viewCartTextStyle: {
+    color: color.white,
+    fontSize: 16,
+    fontFamily: 'roboto.regular',
+  },
+  totalPriceStyle: {
+    color: color.white,
+    fontSize: 16,
+    position: 'absolute',
+    right: 16,
+    fontFamily: 'roboto.regular',
   },
 });

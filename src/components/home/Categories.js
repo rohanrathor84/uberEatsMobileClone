@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, Image, ScrollView} from 'react-native';
+import {View, Text, Image, ScrollView, StyleSheet} from 'react-native';
+import color from '../../resources/colors';
 
 const items = [
   {
@@ -30,28 +31,31 @@ const items = [
 
 export default function Categories() {
   return (
-    <View
-      style={{
-        backgroundColor: '#ffffff',
-        paddingVertical: 10,
-        paddingStart: 15,
-        marginTop: 5,
-      }}>
+    <View style={styles.mainContainer}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {items.map((items, index) => (
-          <View key={index} style={{alignItems: 'center', marginEnd: 30}}>
-            <Image
-              source={items.image}
-              style={{
-                width: 50,
-                height: 40,
-                resizeMode: 'contain',
-              }}
-            />
-            <Text style={{fontSize: 13, fontWeight: '300'}}>{items.text}</Text>
+        {items.map((item, index) => (
+          <View key={index} style={styles.imageContainer}>
+            <Image source={item.image} style={styles.imageStyle} />
+            <Text style={styles.titleStyle}>{item.text}</Text>
           </View>
         ))}
       </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: color.white,
+    paddingVertical: 10,
+    paddingStart: 15,
+    marginTop: 5,
+  },
+  imageContainer: {alignItems: 'center', marginEnd: 30},
+  imageStyle: {
+    width: 50,
+    height: 40,
+    resizeMode: 'contain',
+  },
+  titleStyle: {fontSize: 13, fontFamily: 'roboto.regular', color: color.black},
+});

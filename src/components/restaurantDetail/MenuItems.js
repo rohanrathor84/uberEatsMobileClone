@@ -1,16 +1,8 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Dimensions,
-  FlatList,
-} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {useDispatch, useSelector} from 'react-redux';
-
-const screenWidth = Dimensions.get('screen').width;
+import color from '../../resources/colors';
 
 export const foods = [
   {
@@ -80,8 +72,8 @@ export default function MenuItems({
 
   const cartItems = useSelector(state => state.cartReducer.selectedItems.items);
 
-  const isFoodInCart = (food, cartItems) =>
-    Boolean(cartItems.find(item => item.id === food.id));
+  const isFoodInCart = (food, items) =>
+    Boolean(items.find(item => item.id === food.id));
 
   return (
     <View key={index}>
@@ -90,7 +82,7 @@ export default function MenuItems({
           <></>
         ) : (
           <BouncyCheckbox
-            iconStyle={{borderColor: 'lightgray', borderRadius: 5}}
+            iconStyle={styles.checkBoxStyle}
             fillColor="green"
             onPress={checkboxValue => {
               selectItem(item, checkboxValue);
@@ -101,25 +93,24 @@ export default function MenuItems({
         <FoodInfo food={item} />
         <FoodImage food={item} />
       </View>
-      {foods.length - 1 != index ? <View style={styles.lineSeparator} /> : null}
+      {foods.length - 1 !== index ? (
+        <View style={styles.lineSeparator} />
+      ) : null}
     </View>
   );
 }
 
 const FoodInfo = ({food: {title, description, price}}) => (
-  <View style={{flex: 1, justifyContent: 'space-evenly'}}>
+  <View style={styles.foodInfoContainerStyle}>
     <Text style={styles.titleStyle}>{title}</Text>
-    <Text>{description}</Text>
-    <Text>{price}</Text>
+    <Text style={styles.discriptionStyle}>{description}</Text>
+    <Text style={styles.discriptionStyle}>{price}</Text>
   </View>
 );
 
 const FoodImage = ({food: {image}}) => (
-  <View style={{marginStart: 8}}>
-    <Image
-      source={{uri: image}}
-      style={{width: 100, height: 100, borderRadius: 8}}
-    />
+  <View style={styles.foodImageContainer}>
+    <Image source={{uri: image}} style={styles.imageStyle} />
   </View>
 );
 
@@ -131,11 +122,21 @@ const styles = StyleSheet.create({
   },
   titleStyle: {
     fontSize: 19,
-    fontWeight: '600',
+    fontFamily: 'roboto.medium',
+    color: color.gray800,
+  },
+  discriptionStyle: {
+    fontSize: 15,
+    fontFamily: 'roboto.regular',
+    color: color.gray600,
   },
   lineSeparator: {
     height: 0.5,
-    backgroundColor: '#bdbdbd',
+    backgroundColor: color.gray400,
     marginHorizontal: 20,
   },
+  checkBoxStyle: {borderColor: 'lightgray', borderRadius: 5},
+  foodInfoContainerStyle: {flex: 1, justifyContent: 'space-evenly'},
+  foodImageContainer: {marginStart: 8},
+  imageStyle: {width: 100, height: 100, borderRadius: 8},
 });

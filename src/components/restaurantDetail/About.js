@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, StatusBar, StyleSheet} from 'react-native';
+import color from '../../resources/colors';
 
 export default function About(props) {
   const {name, image, price, reviews, rating, categories} = props.route.params;
@@ -12,6 +13,13 @@ export default function About(props) {
 
   return (
     <View>
+      <StatusBar
+        animated={true}
+        backgroundColor={color.black}
+        barStyle={'light-content'}
+        showHideTransition={'fade'}
+        hidden={false}
+      />
       <RestaurantImage image={image} />
       <RestaurantName name={name} />
       <RestaurantDescription description={description} />
@@ -20,29 +28,31 @@ export default function About(props) {
 }
 
 const RestaurantImage = ({image}) => (
-  <Image source={{uri: image}} style={{width: '100%', height: 200}} />
+  <Image source={{uri: image}} style={styles.restaurantImageStyle} />
 );
 
 const RestaurantName = ({name}) => (
-  <Text
-    style={{
-      fontSize: 28,
-      fontWeight: '600',
-      marginTop: 10,
-      marginHorizontal: 15,
-    }}>
-    {name}
-  </Text>
+  <Text style={styles.restaurantNameStyle}>{name}</Text>
 );
 
 const RestaurantDescription = ({description}) => (
-  <Text
-    style={{
-      marginTop: 10,
-      marginHorizontal: 15,
-      fontWeight: '400',
-      fontSize: 15.5,
-    }}>
-    {description}
-  </Text>
+  <Text style={styles.restaurantDetailStyle}>{description}</Text>
 );
+
+const styles = StyleSheet.create({
+  restaurantImageStyle: {width: '100%', height: 200},
+  restaurantNameStyle: {
+    fontSize: 28,
+    fontFamily: 'roboto.medium',
+    color: color.black,
+    marginTop: 10,
+    marginHorizontal: 15,
+  },
+  restaurantDetailStyle: {
+    marginTop: 10,
+    marginHorizontal: 15,
+    fontFamily: 'roboto.medium',
+    color: color.gray800,
+    fontSize: 15.5,
+  },
+});

@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import color from '../../resources/colors';
 
 export const localRestaurants = [
   {
@@ -43,7 +44,7 @@ export default function RestaurantItems({restaurantData, index, navigation}) {
   return (
     <TouchableOpacity
       activeOpacity={1}
-      style={{marginBottom: 10}}
+      style={styles.mainContainer}
       onPress={() =>
         navigation.navigate('RestaurantDetail', {
           name: restaurantData.name,
@@ -54,9 +55,7 @@ export default function RestaurantItems({restaurantData, index, navigation}) {
           categories: restaurantData.categories,
         })
       }>
-      <View
-        key={index}
-        style={{marginTop: 10, padding: 15, backgroundColor: 'white'}}>
+      <View key={index} style={styles.headerStyle}>
         <RestaurantImage image={restaurantData.image_url} />
         <RestaurantInfo
           name={restaurantData.name}
@@ -74,13 +73,13 @@ const RestaurantImage = ({image}) => {
         source={{
           uri: image,
         }}
-        style={{width: '100%', height: 180}}
+        style={styles.imageStyle}
       />
-      <TouchableOpacity style={{position: 'absolute', right: 20, top: 20}}>
+      <TouchableOpacity style={styles.wishListStyle}>
         <MaterialCommunityIcons
           name="heart-outline"
           size={25}
-          color="#ffffff"
+          color={color.white}
         />
       </TouchableOpacity>
     </>
@@ -88,27 +87,44 @@ const RestaurantImage = ({image}) => {
 };
 
 const RestaurantInfo = ({name, rating}) => (
-  <View
-    style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginTop: 10,
-    }}>
+  <View style={styles.titleStyle}>
     <View>
-      <Text style={{fontSize: 15, fontWeight: 'bold'}}>{name}</Text>
-      <Text style={{fontSize: 13, color: 'gray'}}>30-45 • min</Text>
+      <Text style={styles.titleTextStyle}>{name}</Text>
+      <Text style={styles.titleSubTextStyle}>30-45 • min</Text>
     </View>
-    <View
-      style={{
-        backgroundColor: '#eeeeee',
-        height: 30,
-        width: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 15,
-      }}>
+    <View style={styles.ratingStyle}>
       <Text>{rating}</Text>
     </View>
   </View>
 );
+
+const styles = StyleSheet.create({
+  mainContainer: {marginBottom: 10},
+  headerStyle: {marginTop: 10, padding: 15, backgroundColor: color.white},
+  imageStyle: {width: '100%', height: 180},
+  wishListStyle: {position: 'absolute', right: 20, top: 20},
+  titleStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  titleTextStyle: {
+    fontSize: 15,
+    fontFamily: 'roboto.medium',
+    color: color.gray800,
+  },
+  titleSubTextStyle: {
+    fontSize: 13,
+    fontFamily: 'roboto.regular',
+    color: color.gray600,
+  },
+  ratingStyle: {
+    backgroundColor: color.gray200,
+    height: 30,
+    width: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+  },
+});

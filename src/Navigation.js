@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './screens/Home';
@@ -13,6 +13,9 @@ import Orders from './screens/Orders';
 import Account from './screens/Account';
 import OrderCompleted from './screens/OrderCompleted';
 import OrderDetail from './components/orders/OrderDetail';
+import {Platform, StatusBar, StyleSheet} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
+import colors from './resources/colors';
 
 const store = configureStore();
 
@@ -24,17 +27,19 @@ export default function RootNavigation() {
     headerShown: false,
   };
 
+  useEffect(() => {
+    SplashScreen.hide();
+    return () => {};
+  }, []);
+
   function BottomTabScreens() {
     return (
       <Tab.Navigator
         initialRouteName="HomeScreen"
         backBehavior="history"
-        barStyle={{
-          backgroundColor: '#ffffff',
-          borderTopColor: '#bdbdbd',
-          borderTopWidth: 1,
-        }}
-        activeColor="#000000">
+        barStyle={styles.barStyle}
+        activeColor={colors.redShade}
+        inactiveColor={colors.gray800}>
         <Tab.Screen
           name="HomeScreen"
           component={Home}
@@ -86,6 +91,13 @@ export default function RootNavigation() {
   return (
     <ReduxProvider store={store}>
       <NavigationContainer independent={true}>
+        <StatusBar
+          animated={true}
+          backgroundColor={Platform.Version >= 23 ? '#ffffff' : '#000000'}
+          barStyle={Platform.Version >= 23 ? 'dark-content' : 'default'}
+          showHideTransition={'fade'}
+          hidden={false}
+        />
         <Stack.Navigator
           initialRouteName="BottomTabScreens"
           screenOptions={screenOptions}>
@@ -98,3 +110,11 @@ export default function RootNavigation() {
     </ReduxProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  barStyle: {
+    backgroundColor: colors.white,
+    borderTopColor: colors.gray400,
+    borderTopWidth: 1,
+  },
+});

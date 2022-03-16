@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import LottieView from 'lottie-react-native';
 import MenuItems from '../components/restaurantDetail/MenuItems';
 import firestore from '@react-native-firebase/firestore';
+import color from '../resources/colors';
 
-export default function orderCompleted() {
+export default function OrderCompleted() {
   const [lastOrder, setlastOrder] = useState({
     items: [
       {
@@ -45,23 +46,17 @@ export default function orderCompleted() {
       data={lastOrder.items}
       keyExtractor={(item, index) => index.toString()}
       showsVerticalScrollIndicator={false}
-      style={{flex: 1, backgroundColor: 'white'}}
+      style={styles.flatListStyle}
       ListHeaderComponent={
-        <View style={{margin: 15, alignItems: 'center'}}>
+        <View style={styles.headerContainerStyle}>
           <LottieView
-            style={{height: 100, alignSelf: 'center', marginBottom: 30}}
+            style={styles.checkAnimationStyle}
             source={require('../assets/animations/check-mark.json')}
             autoPlay={true}
             speed={0.5}
             loop={false}
           />
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: 'black',
-            }}>
+          <Text style={styles.msgTextStyle}>
             Your order at {restaurantName} has been placed for ${total}
           </Text>
         </View>
@@ -78,7 +73,7 @@ export default function orderCompleted() {
       )}
       ListFooterComponent={
         <LottieView
-          style={{height: 200, alignSelf: 'center', marginBottom: 20}}
+          style={styles.cookingAnimationStyle}
           source={require('../assets/animations/cooking.json')}
           autoPlay={true}
           speed={0.5}
@@ -88,3 +83,16 @@ export default function orderCompleted() {
     />
   );
 }
+
+const styles = StyleSheet.create({
+  flatListStyle: {flex: 1, backgroundColor: color.white},
+  headerContainerStyle: {margin: 15, alignItems: 'center'},
+  checkAnimationStyle: {height: 100, alignSelf: 'center', marginBottom: 30},
+  msgTextStyle: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontFamily: 'roboto.medium',
+    color: color.black,
+  },
+  cookingAnimationStyle: {height: 200, alignSelf: 'center', marginBottom: 20},
+});

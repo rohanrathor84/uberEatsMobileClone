@@ -10,6 +10,10 @@ const color = {
   gray300: '#E0E0E0',
   gray200: '#EEEEEE',
   gray100: '#f5f5f5',
+  orangeE7: '#E74B3C',
+  gray99: '#999999',
+  blackShin1: 'rgba(0,0,0,0.7)',
+  redShade: '#ff0028',
   colorArray: [
     '#FFEBEE',
     '#FCE4EC',

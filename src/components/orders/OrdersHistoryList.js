@@ -1,6 +1,6 @@
 import AnimatedLottieView from 'lottie-react-native';
 import React from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import color from '../../resources/colors';
 
 export default function OrderHistory({
@@ -10,49 +10,26 @@ export default function OrderHistory({
   navigation,
 }) {
   return (
-    <View style={{margin: 16}}>
-      {item.status <= 5 && index == 0 ? (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: 16, fontWeight: '800', color: 'black'}}>
-            Now
-          </Text>
-          <View
-            style={{
-              height: 16,
-              width: 16,
-              borderRadius: 8,
-              backgroundColor: '#89CFF0',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginStart: 4,
-            }}>
-            <Text style={{color: 'white'}}>{runningOrderSize}</Text>
+    <View style={styles.mainContainer}>
+      {item.status <= 5 && index === 0 ? (
+        <View style={styles.runningStatusStyle}>
+          <Text style={styles.nowTextStyle}>Now</Text>
+          <View style={styles.runningOrderSizeStyle}>
+            <Text style={styles.orderSizeTextStyle}>{runningOrderSize}</Text>
           </View>
         </View>
       ) : (
         <></>
       )}
 
-      {index == runningOrderSize ? (
-        <Text style={{fontSize: 16, fontWeight: '800', color: 'black'}}>
-          Past
-        </Text>
+      {index === runningOrderSize ? (
+        <Text style={styles.pastTextStyle}>Past</Text>
       ) : (
         <></>
       )}
 
       <TouchableOpacity
-        style={{
-          backgroundColor: 'white',
-          borderRadius: 5,
-          elevation: 6,
-          shadowColor: '#bdbdbd',
-          marginTop: 16,
-        }}
+        style={styles.orderDetailContainer}
         activeOpacity={1}
         onPress={() => {
           navigation.navigate('OrderDetail', {
@@ -60,86 +37,75 @@ export default function OrderHistory({
             items: item,
           });
         }}>
-        <Text
-          style={{
-            paddingVertical: 6,
-            marginHorizontal: 16,
-            color: color.gray500,
-          }}>
+        <Text style={styles.headerTextStyle}>
           {item.restaurantName} order on {item.orderOn}
         </Text>
-        <View
-          style={{height: 1, width: '100%', backgroundColor: color.gray200}}
-        />
-        <View style={{flexDirection: 'row'}}>
+        <View style={styles.dividerStyle} />
+        <View style={styles.orderDetailSubContainer}>
           <Image
             source={{
               uri: item.restaurantImage,
             }}
-            style={{height: 50, width: 50, borderRadius: 6, margin: 16}}
+            style={styles.restaurantImageStyle}
           />
-          <View style={{justifyContent: 'center', flex: 1, marginEnd: 6}}>
-            <Text style={{color: color.gray800, fontWeight: '600'}}>
+          <View style={styles.restaurantDetailContainer}>
+            <Text style={styles.restaurantNameStyle}>
               {item.restaurantName}
             </Text>
-            <Text style={{color: color.gray700, fontWeight: '500'}}>
-              {item.total}
-            </Text>
-            <Text
-              style={{color: color.gray500, fontWeight: '400'}}
-              numberOfLines={1}>
-              {item.status == 1
+            <Text style={styles.restaurantPriceStyle}>{item.total}</Text>
+            <Text style={styles.orderMsgText} numberOfLines={1}>
+              {item.status === 1
                 ? 'Order Placed'
-                : item.status == 2
+                : item.status === 2
                 ? 'Delivery guy on the way to pickup your order'
-                : item.status == 3
+                : item.status === 3
                 ? 'Delivery guy waiting at restaurant'
-                : item.status == 4
+                : item.status === 4
                 ? 'Delivery guy on the way'
-                : item.status == 5
+                : item.status === 5
                 ? 'Delivery guy waiting at your doorstep'
-                : item.status == 6
+                : item.status === 6
                 ? 'Delivered'
                 : 'Canceled'}
             </Text>
           </View>
         </View>
-        <View style={{alignItems: 'center'}}>
-          {item.status == 1 ? (
+        <View style={styles.animationContainer}>
+          {item.status === 1 ? (
             <AnimatedLottieView
-              style={{height: 200}}
+              style={styles.animationStyle}
               source={require('../../assets/animations/delivery-guy-order-pickup.json')}
               autoPlay={true}
               speed={0.5}
               loop={true}
             />
-          ) : item.status == 2 ? (
+          ) : item.status === 2 ? (
             <AnimatedLottieView
-              style={{height: 200}}
+              style={styles.animationStyle}
               source={require('../../assets/animations/delivery-guy-order-pickup.json')}
               autoPlay={true}
               speed={0.5}
               loop={true}
             />
-          ) : item.status == 3 ? (
+          ) : item.status === 3 ? (
             <AnimatedLottieView
-              style={{height: 200}}
+              style={styles.animationStyle}
               source={require('../../assets/animations/delivery-guy-waiting.json')}
               autoPlay={true}
               speed={0.5}
               loop={true}
             />
-          ) : item.status == 4 ? (
+          ) : item.status === 4 ? (
             <AnimatedLottieView
-              style={{height: 200}}
+              style={styles.animationStyle}
               source={require('../../assets/animations/delivery-guy-out-for-delivery.json')}
               autoPlay={true}
               speed={0.5}
               loop={true}
             />
-          ) : item.status == 5 ? (
+          ) : item.status === 5 ? (
             <AnimatedLottieView
-              style={{height: 200}}
+              style={styles.animationStyle}
               source={require('../../assets/animations/delivery-guy-waiting-at-the-doorstep.json')}
               autoPlay={true}
               speed={0.5}
@@ -172,3 +138,44 @@ export default function OrderHistory({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  mainContainer: {margin: 16},
+  runningStatusStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  nowTextStyle: {fontSize: 16, fontWeight: '800', color: 'black'},
+  runningOrderSizeStyle: {
+    height: 16,
+    width: 16,
+    borderRadius: 8,
+    backgroundColor: '#89CFF0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginStart: 4,
+  },
+  orderSizeTextStyle: {color: 'white'},
+  pastTextStyle: {fontSize: 16, fontWeight: '800', color: 'black'},
+  orderDetailContainer: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    elevation: 6,
+    shadowColor: '#bdbdbd',
+    marginTop: 16,
+  },
+  headerTextStyle: {
+    paddingVertical: 6,
+    marginHorizontal: 16,
+    color: color.gray500,
+  },
+  dividerStyle: {height: 1, width: '100%', backgroundColor: color.gray200},
+  orderDetailSubContainer: {flexDirection: 'row'},
+  restaurantImageStyle: {height: 50, width: 50, borderRadius: 6, margin: 16},
+  restaurantDetailContainer: {justifyContent: 'center', flex: 1, marginEnd: 6},
+  restaurantNameStyle: {color: color.gray800, fontWeight: '600'},
+  restaurantPriceStyle: {color: color.gray700, fontWeight: '500'},
+  orderMsgText: {color: color.gray500, fontWeight: '400'},
+  animationContainer: {alignItems: 'center'},
+  animationStyle: {height: 200},
+});
