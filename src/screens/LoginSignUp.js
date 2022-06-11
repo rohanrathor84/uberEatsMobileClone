@@ -1,5 +1,5 @@
 import AnimatedLottieView from 'lottie-react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,52 @@ import {
   StyleSheet,
 } from 'react-native';
 import color from '../resources/colors';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
-export default function LoginSignUp() {
+export default function LoginSignUp({navigation, route, onRequestClose}) {
   const [showSignIn, setShowSignIn] = useState(false);
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      scopes: ['https://www.googleapis.com/auth/drive.readonly'], // [Android] what API you want to access on behalf of the user, default is email and profile
+      webClientId:
+        '604332474544-24rs6ioau9oe4h7djccphru38lhbl1r9.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+    });
+    return () => {};
+  }, []);
+
+  const onPress = async () => {
+    onRequestClose();
+    // navigation.navigate('BottomTabScreens');
+    // if ((await AsyncStorage.getItem('introSkiped')) === null) {
+    //   await AsyncStorage.setItem('introSkiped', 'true');
+    // }
+  };
+
+  const googleBtnPress = () => {
+    console.log('googleBtnPress!');
+    GoogleSignin.hasPlayServices()
+      .then(hasPlayService => {
+        if (hasPlayService) {
+          GoogleSignin.signIn()
+            .then(userInfo => {
+              console.log(JSON.stringify(userInfo));
+            })
+            .catch(e => {
+              console.log('ERROR IS: ' + JSON.stringify(e));
+            });
+        }
+      })
+      .catch(e => {
+        console.log('ERROR IS: ' + JSON.stringify(e));
+      });
+  };
   return (
     <View style={styles.mainContainer}>
       <AnimatedLottieView
@@ -26,7 +69,7 @@ export default function LoginSignUp() {
         Sign-Up now and never gets hungry again!
       </Text>
       <View style={styles.buttonViewStyle}>
-        <Pressable style={styles.googleBtnViewStyle}>
+        <Pressable style={styles.googleBtnViewStyle} onPress={googleBtnPress}>
           <AnimatedLottieView
             style={styles.iconStyle}
             source={require('../assets/animations/google.json')}
@@ -62,6 +105,15 @@ export default function LoginSignUp() {
         </Text>
       </View>
 
+      {route.name !== 'AccountScreen' ? (
+        <Pressable style={styles.skipViewStyle} onPress={onPress}>
+          <Text style={styles.skipText}>Skip</Text>
+          <Ionicons name="chevron-forward" size={16} color={color.gray600} />
+        </Pressable>
+      ) : (
+        <></>
+      )}
+
       <Modal
         visible={showSignIn}
         animationType={'slide'}
@@ -75,7 +127,9 @@ export default function LoginSignUp() {
             <View style={styles.feedBackBtn} />
           </TouchableWithoutFeedback>
           <View style={styles.btnViewStyle}>
-            <Pressable style={styles.googleBtnViewStyle}>
+            <Pressable
+              style={styles.googleBtnViewStyle}
+              onPress={googleBtnPress}>
               <AnimatedLottieView
                 style={styles.iconStyle}
                 source={require('../assets/animations/google.json')}
@@ -169,4 +223,17 @@ const styles = StyleSheet.create({
   },
   feedBackBtn: {flex: 1},
   btnViewStyle: {backgroundColor: '#bdbdbd', padding: 20},
+  skipViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    margin: 24,
+  },
+  skipText: {
+    fontSize: 16,
+    color: color.gray600,
+    fontFamily: 'roboto.regular',
+  },
 });

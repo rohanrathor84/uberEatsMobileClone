@@ -10,7 +10,7 @@ export const TimeConverter = time => {
     let AMorPMFormat = time[0] < 12 ? 'AM' : 'PM';
     let hour = timeArray[0] % 12 || 12;
     let minute = timeArray[1];
-    if (hour.toString().length == 1) {
+    if (hour.toString().length === 1) {
       hour = `0${hour}`;
     }
     return `${hour}:${minute} ${AMorPMFormat}`;

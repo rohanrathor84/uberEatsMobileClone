@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "200573710192",
-    "project_id": "uber-eats-app-clone-cc3fa",
-    "storage_bucket": "uber-eats-app-clone-cc3fa.appspot.com"
+    "project_number": "604332474544",
+    "project_id": "uber-eats-service",
+    "storage_bucket": "uber-eats-service.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:200573710192:android:9b7d0dd66a03ad9973a9b5",
+        "mobilesdk_app_id": "1:604332474544:android:470c3bf2e6ad9ad1317b75",
         "android_client_info": {
           "package_name": "com.ubereatsmobileclone"
         }
       },
       "oauth_client": [
         {
-          "client_id": "200573710192-6bq1ut5mj2fbrqf1r6376h1ktk1u5vvg.apps.googleusercontent.com",
+          "client_id": "604332474544-24rs6ioau9oe4h7djccphru38lhbl1r9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ubereatsmobileclone",
+            "certificate_hash": "02f6e809dd5c3b06f2b6386231f56d0f958188ba"
+          }
+        },
+        {
+          "client_id": "604332474544-kraacr80l7sltmbbq9vv43629lc0ura4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDab-ue8K2AfAFD1ut9wy2SeEJ9e3YBloM"
+          "current_key": "AIzaSyDqk3sxkI--VVYCaK0445AoL2w3POJikbg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "200573710192-6bq1ut5mj2fbrqf1r6376h1ktk1u5vvg.apps.googleusercontent.com",
+              "client_id": "604332474544-kraacr80l7sltmbbq9vv43629lc0ura4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

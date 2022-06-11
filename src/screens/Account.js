@@ -9,7 +9,9 @@ import {
   ScrollView,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {useSelector} from 'react-redux';
 import color from '../resources/colors';
+import LoginSignUp from './LoginSignUp';
 
 const data = [
   {
@@ -59,7 +61,11 @@ const data = [
   },
 ];
 
-export default function Account() {
+export default function Account(props) {
+  const isLoggedIn = useSelector(
+    state => state.userReducer.userInfo.isLoggedIn,
+  );
+  console.log('isLoggedIn: ' + isLoggedIn);
   const RenderItem = ({item, index}) => {
     return (
       <View key={index} style={styles.renderItemViewStyle}>
@@ -82,7 +88,7 @@ export default function Account() {
       </View>
     );
   };
-  return (
+  return isLoggedIn ? (
     <View style={styles.mainContainer}>
       <View style={styles.userProfileStyle}>
         <Image
@@ -117,6 +123,8 @@ export default function Account() {
         </View>
       </ScrollView>
     </View>
+  ) : (
+    <LoginSignUp navigation={props.navigation} route={props.route} />
   );
 }
 

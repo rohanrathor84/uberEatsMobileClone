@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Modal,
   Text,
+  BackHandler,
+  Platform,
 } from 'react-native';
 import Categories from '../components/home/Categories';
 import HeaderTabs from '../components/home/HeaderTabs';
@@ -16,6 +18,9 @@ import ErrorScreen from '../components/common/ErrorScreen';
 import {checkNetworkConnected} from '../utilities/utils';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import color from '../resources/colors';
+import LoginSignUp from './LoginSignUp';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 
 const YELP_API_KEY =
   'iqof8CBHsusIWGQRaCBsdEese-EcxmsTcc-MOT-A5AskVV4nk1jfbIi-9-ESmx8CPxHoPq8PdwyQ9jzPynhifBK0sUeVbhu3CvXJlk-d8O5RxTNaAcS-HRv442RlYXYx';
@@ -29,6 +34,7 @@ export default class Home extends PureComponent {
       isLoading: true,
       showErrorScreen: false,
       notFoundModalVisible: false,
+      showLoginSignUpModal: false,
     };
   }
 
@@ -43,7 +49,7 @@ export default class Home extends PureComponent {
 
     checkNetworkConnected(async isConnected => {
       if (isConnected) {
-        return await fetch(yelpUrl, apiOptions)
+        await fetch(yelpUrl, apiOptions)
           .then(res => res.json())
           .then(json => {
             if (json.businesses !== undefined) {
@@ -102,8 +108,58 @@ export default class Home extends PureComponent {
     });
   };
 
+  onRequestLoginSignUpOpen = async () => {
+    this.setState({
+      showLoginSignUpModal:
+        (await AsyncStorage.getItem('introSkiped')) === null ? true : false,
+    });
+  };
+
+  onRequestLoginSignUpClose = () => {
+    AsyncStorage.setItem('introSkiped', 'false');
+    this.setState({
+      showLoginSignUpModal: false,
+    });
+  };
+
+  checkPermission = () => {
+    request(
+      (Platform.OS = 'android'
+        ? PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION
+        : PERMISSIONS.IOS.LOCATION_ALWAYS),
+    )
+      .then(result => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              'This feature is not available (on this device / in this context)',
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log(
+              'The permission has not been requested / is denied but requestable',
+            );
+            break;
+          case RESULTS.LIMITED:
+            console.log('The permission is limited: some actions are possible');
+            break;
+          case RESULTS.GRANTED:
+            console.log('The permission is granted');
+            break;
+          case RESULTS.BLOCKED:
+            console.log('The permission is denied and not requestable anymore');
+            break;
+        }
+      })
+      .catch(error => {
+        // …
+      });
+  };
+
   componentDidMount() {
     this.getRestaurantsFromYelp();
+    // this.checkPermission();
+    this.onRequestLoginSignUpOpen();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -114,6 +170,10 @@ export default class Home extends PureComponent {
       this.getRestaurantsFromYelp();
     }
   }
+
+  // componentWillUnmount() {
+  //   BackHandler.exitApp();
+  // }
 
   render() {
     return (
@@ -161,6 +221,16 @@ export default class Home extends PureComponent {
               />
             </View>
           </View>
+        </Modal>
+        <Modal
+          visible={this.state.showLoginSignUpModal}
+          animationType={'fade'}
+          onRequestClose={this.onRequestLoginSignUpClose}>
+          <LoginSignUp
+            navigation={this.props.navigation}
+            route={this.props.route}
+            onRequestClose={this.onRequestLoginSignUpClose}
+          />
         </Modal>
       </SafeAreaView>
     );

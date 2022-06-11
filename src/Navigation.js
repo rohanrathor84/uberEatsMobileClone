@@ -16,6 +16,7 @@ import OrderDetail from './components/orders/OrderDetail';
 import {Platform, StatusBar, StyleSheet} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import colors from './resources/colors';
+import LoginSignUp from './screens/LoginSignUp';
 
 const store = configureStore();
 
@@ -105,6 +106,7 @@ export default function RootNavigation() {
           <Stack.Screen name="RestaurantDetail" component={RestaurantDetail} />
           <Stack.Screen name="OrderCompleted" component={OrderCompleted} />
           <Stack.Screen name="OrderDetail" component={OrderDetail} />
+          <Stack.Screen name="LoginSignUp" component={LoginSignUp} />
         </Stack.Navigator>
       </NavigationContainer>
     </ReduxProvider>
